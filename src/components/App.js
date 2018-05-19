@@ -1,25 +1,63 @@
-import React from "react";
+import React from 'react'
+import MovieItem from './MovieItem'
 
-function MovieItem(props) {
-  console.log("props", props);
-  return (
-    <div className="card">
-      <img className="card-img-top" src="" alt="" />
-      <div className="card-body">
-        <h6 className="card-title">{props.title}</h6>
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="mb-0">Rating: {props.rating}</p>
-        </div>
+import { movies } from './movies'
+
+class MoviesList extends React.Component {
+  state = {
+    movies: movies,
+  }
+
+  render () {
+    return (
+      <div className="row">
+        {this.state.movies.map(item => {
+          return (
+            <div className="col-6 mb-4">
+              <MovieItem item={item} addLike={this.props.addLike} unLike={this.props.unLike} />
+            </div>
+          )
+        })}
       </div>
-    </div>
-  );
-}
-function App() {
-  return (
-    <div>
-      <MovieItem title="Main title" rating={1} like={true} />
-    </div>
-  );
+    )
+  }
 }
 
-export default App;
+const LikeCounts = ({counts}) => {
+  return (
+    <p>Count of likes: {counts}</p>
+  )
+}
+
+class App extends React.Component {
+  state = {
+    counts: 0,
+  }
+
+  addLike = () => {
+    this.setState({
+      counts: this.state.counts + 1,
+    })
+  }
+
+  unLike = () => {
+    this.setState({
+      counts: this.state.counts - 1,
+    })
+  }
+
+  render () {
+    return (
+      <div className="container">
+        <LikeCounts counts={this.state.counts}/>
+        <MoviesList
+          addLike={this.addLike}
+          unLike={this.unLike}
+          items={this.state.movies}
+        />
+      </div>
+    )
+  }
+}
+
+export default App
