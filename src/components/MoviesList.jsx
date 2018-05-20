@@ -3,6 +3,8 @@ import MovieItem from './MovieItem'
 
 export default class extends React.Component {
   render () {
+    const {unLike, addLike, removeFavorite, addFavorite} = this.props
+
     return (
       <div className="row">
         {this.props.items.map(item => {
@@ -10,10 +12,10 @@ export default class extends React.Component {
             <div className="col-6 mb-4">
               <MovieItem
                 item={item}
-                addLike={this.props.addLike}
-                unLike={this.props.unLike}
-                removeFavorite={this.props.removeFavorite}
-                addFavorite={this.props.addFavorite}
+                addLike={addLike}
+                unLike={unLike}
+                removeFavorite={removeFavorite}
+                addFavorite={addFavorite}
               />
             </div>
           )

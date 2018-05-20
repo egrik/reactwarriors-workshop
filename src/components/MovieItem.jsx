@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class MovieItem extends React.Component {
   state = {
@@ -14,12 +15,9 @@ class MovieItem extends React.Component {
   }
 
   likeHandler = (evt) => {
-    if (this.state.isLiked) {
-      this.props.unLike()
-    }
-    else {
-      this.props.addLike()
-    }
+    const {unLike, addLike} = this.props
+
+    this.state.isLiked ? unLike() : addLike();
 
     this.setState({
       isLiked: !this.state.isLiked,
@@ -80,6 +78,14 @@ class MovieItem extends React.Component {
       </div>
     )
   }
+}
+
+MovieItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  addLike: PropTypes.func.isRequired,
+  unLike: PropTypes.func.isRequired,
+  removeFavorite: PropTypes.func.isRequired,
+  addFavorite: PropTypes.func.isRequired,
 }
 
 export default MovieItem
