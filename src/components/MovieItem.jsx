@@ -4,6 +4,7 @@ class MovieItem extends React.Component {
   state = {
     show: false,
     isLiked: false,
+    isFavorite: false
   }
 
   toggleShowOverview = () => {
@@ -25,6 +26,21 @@ class MovieItem extends React.Component {
     })
   }
 
+  favoriteHandler = (evt) => {
+    const {item = {}, removeFavorite, addFavorite} = this.props
+
+    if (this.state.isFavorite) {
+      removeFavorite(item.id)
+    }
+    else {
+      addFavorite(item)
+    }
+
+    this.setState({
+      isFavorite: !this.state.isFavorite,
+    })
+  }
+
   render () {
     const {item = {}} = this.props
     return (
@@ -37,8 +53,8 @@ class MovieItem extends React.Component {
           </div>
           <div>
             <button
-                className={'btn btn-' + (this.state.show ? 'warning' : 'primary')}
-                onClick={this.toggleShowOverview}
+              className={'btn btn-' + (this.state.show ? 'warning' : 'primary')}
+              onClick={this.toggleShowOverview}
             >
               {this.state.show ? 'Hide overview' : 'Show overview'}
             </button>
@@ -50,6 +66,14 @@ class MovieItem extends React.Component {
               onClick={this.likeHandler}
             >
               {this.state.isLiked ? 'Unlike' : 'Like'}
+            </button>
+          </div>
+          <div>
+            <button
+              className="btn btn-primary"
+              onClick={this.favoriteHandler}
+            >
+              {this.state.isFavorite ? 'Remove from favorite' : 'Add to favorite'}
             </button>
           </div>
         </div>

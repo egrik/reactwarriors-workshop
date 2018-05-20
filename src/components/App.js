@@ -1,38 +1,36 @@
 import React from 'react'
-import MovieItem from './MovieItem'
-
+import LikeCounts from './LikeCounts'
+import MoviesList from './MoviesList'
 import { movies } from './movies'
-
-class MoviesList extends React.Component {
-  state = {
-    movies: movies,
-  }
-
-  render () {
-    return (
-      <div className="row">
-        {this.state.movies.map(item => {
-          return (
-            <div className="col-6 mb-4">
-              <MovieItem item={item} addLike={this.props.addLike} unLike={this.props.unLike} />
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
-}
-
-const LikeCounts = ({counts}) => {
-  return (
-    <p>Count of likes: {counts}</p>
-  )
-}
+import FavoriteList from './FavoriteList'
+import FavoriteCounts from './FavoriteCounts'
 
 class App extends React.Component {
   state = {
     counts: 0,
+    favourites: []
   }
+
+  addFavorite = (item) => {
+    this.setState({
+      favourites: [...this.state.favourites, item],
+    })
+  }
+
+  removeFavorite = (id) => {
+    const favoriteIndex = this.findFavoriteIndex(id)
+    if (favoriteIndex > -1) {
+      let favorites = [...this.state.favourites]
+      favorites.splice(favoriteIndex, 1)
+      this.setState({
+        favourites: favorites,
+      })
+    }
+  }
+
+  findFavoriteIndex = (id) => this.state.favourites.findIndex((item) => item.id === id)
+
+  isMovieFavorite = (id) => this.findFavoriteIndex(id) > -1
 
   addLike = () => {
     this.setState({
@@ -49,12 +47,22 @@ class App extends React.Component {
   render () {
     return (
       <div className="container">
-        <LikeCounts counts={this.state.counts}/>
-        <MoviesList
-          addLike={this.addLike}
-          unLike={this.unLike}
-          items={this.state.movies}
-        />
+        <div className="row">
+          <div className="col-10">
+            <LikeCounts counts={this.state.counts}/>
+            <MoviesList
+              addLike={this.addLike}
+              unLike={this.unLike}
+              items={movies}
+              removeFavorite={this.removeFavorite}
+              addFavorite={this.addFavorite}
+            />
+          </div>
+          <div className="col-2">
+            <FavoriteCounts counts={this.state.favourites.length}/>
+            <FavoriteList items={this.state.favourites}/>
+          </div>
+        </div>
       </div>
     )
   }

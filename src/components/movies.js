@@ -9,6 +9,7 @@ export const movie = {
 };
 
 export const movies = [
+
   {
     vote_count: 74,
     id: 437557,
